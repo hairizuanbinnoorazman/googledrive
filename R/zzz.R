@@ -8,6 +8,9 @@
     drive.client.id = "10709400262-28lpv43nui21l1172cup6kh68blvkllq.apps.googleusercontent.com",
     drive.client.secret = "FADkDoE_H0B7j-VytEjTbgaU",
 
+    # About me Representation
+    drive.endpoint.about = "https://www.googleapis.com/drive/v3/about",
+
     # Files Resource Representation
     drive.endpoint.files.copy = "https://www.googleapis.com/drive/v3/files/{fileId}/copy",
     drive.endpoint.upload.files.create = "https://www.googleapis.com/upload/drive/v3/files",
