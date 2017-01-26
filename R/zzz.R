@@ -4,7 +4,7 @@
 
 .onLoad <- function(libname, pkgname) {
   op <- options()
-  op.slides <- list(
+  op.drive <- list(
     drive.client.id = "10709400262-28lpv43nui21l1172cup6kh68blvkllq.apps.googleusercontent.com",
     drive.client.secret = "FADkDoE_H0B7j-VytEjTbgaU",
 
@@ -24,8 +24,8 @@
     drive.endpoint.permissions.get = "https://www.googleapis.com/drive/v3/files/{fileId}/permissions/{permissionId}",
     drive.endpoint.permissions.list = "https://www.googleapis.com/drive/v3/files/{fileId}/permissions"
   )
-  toset <- !(names(op.slides) %in% names(op))
-  if (any(toset)) options(op.slides[toset])
+  toset <- !(names(op.drive) %in% names(op))
+  if (any(toset)) options(op.drive[toset])
 
   invisible()
 }
