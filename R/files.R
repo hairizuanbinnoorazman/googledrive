@@ -1,4 +1,6 @@
 #' Get the list of files from Googledrive
+#' @importFrom httr config accept_json content
+#' @importFrom jsonlite fromJSON
 #' @export
 list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
                        orderBy = NULL, spaces = NULL, corpus = NULL){
