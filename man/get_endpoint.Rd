@@ -5,7 +5,8 @@
 \title{Generate endpoint for the Google Drive API
 Temporarily available}
 \usage{
-get_endpoint(typeOfEndpoint = "drive.endpoint.about", fileId = NULL)
+get_endpoint(typeOfEndpoint = "drive.endpoint.about", fileId = NULL,
+  permissionId = NULL)
 }
 \description{
 Generate endpoint for the Google Drive API
