@@ -1,15 +1,22 @@
 #' Get the list of files from Googledrive
 #' @export
-list_files <- function(){
+list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
+                       orderBy = NULL, spaces = NULL, corpus = NULL){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.list")
   # Get token
   token <- get_token()
   config <- httr::config(token=token)
-  # Wrapping body parameters in a requests list
-  body_params <- list(requests=requests_list)
+  # List of query parameters
+  query_params = list()
+  query_params['q'] = q
+  query_params['pageSize'] = pageSize
+  query_params['pageToken'] = pageToken
+  query_params['orderBy'] = orderBy
+  query_params['spaces'] = spaces
+  query_params['corpus'] = corpus
   # Modify slides
-  result <- httr::POST(url, config = config, accept_json(), body = body_params, encode = "json")
+  result <- httr::GET(url, config = config, accept_json(), query = query_params, encode = "json")
   # Process results
   result_content <- content(result, "text")
   result_list <- fromJSON(result_content)
