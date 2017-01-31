@@ -49,6 +49,13 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
 #' @param id ID of the drive folder
 #' @inheritParams base_list_files
 #' @export
+#' @examples
+#' \dontrun{
+#' library(googledrive)
+#' authorize()
+#' # Folder id is 0XXXXXXXX
+#' list_files_in_folder('0XXXXXXXX')
+#' }
 list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                   orderBy = NULL, spaces = NULL, corpus = NULL){
   q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
@@ -60,6 +67,13 @@ list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' @param id ID of the drive folder
 #' @inheritParams base_list_files
 #' @export
+#' @examples
+#' \dontrun{
+#' library(googledrive)
+#' authorize()
+#' # Folder id is 0XXXXXXXX
+#' list_folders_in_folder('0XXXXXXXX')
+#' }
 list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                  orderBy = NULL, spaces = NULL, corpus = NULL){
   q = paste0("'", id, "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false")

@@ -29,4 +29,12 @@ values are 'drive', 'appDataFolder' and 'photos'.}
 \description{
 Get list of files from a folder
 }
+\examples{
+\dontrun{
+library(googledrive)
+authorize()
+# Folder id is 0XXXXXXXX
+list_files_in_folder('0XXXXXXXX')
+}
+}
 
