@@ -33,7 +33,7 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
   query_params['orderBy'] = orderBy
   query_params['spaces'] = spaces
   query_params['corpus'] = corpus
-  # Modify slides
+  # GET Request
   result <- httr::GET(url, config = config, accept_json(), query = query_params, encode = "json")
   # Process results
   result_content <- content(result, "text")
@@ -131,7 +131,7 @@ get_file_by_name <- function(filename, matchType, id = NULL, pageSize = NULL, pa
   }
 }
 
-#' Get file via name
+#' Copy a file in Google Drive
 #' @param fileID ID of the file in Google Drive
 #' @param folderID ID of the folder to store the copied file
 #' @param fileName The name of the file. This is not necessarily unique within a folder.
@@ -146,8 +146,31 @@ copy_file <- function(fileID, folderID = NULL, fileName = NULL){
   body_params = list()
   body_params['name'] = fileName
   body_params['parents'] = list(list(folderID))
-  # Modify slides
+  # POST Request
   result <- httr::POST(url, config = config, accept_json(), body = body_params, encode = "json")
+  # Process results
+  result_content <- content(result, "text")
+  result_list <- fromJSON(result_content)
+  # If endpoint return url status other than 200, return error message
+  if(httr::status_code(result) != 200){
+    stop(result_list$error$message)
+  }
+  return(result_list)
+}
+
+
+#' Delete a file in Google Drive
+#' @description Permanently deletes a file owned by the user without moving it to the trash.
+#' @param fileID ID of the file in Google Drive
+#' @export
+delete_file <- function(fileID){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.files.delete", fileID)
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # DELETE Request
+  result <- httr::DELETE(url, config = config, accept_json(), encode = "json")
   # Process results
   result_content <- content(result, "text")
   result_list <- fromJSON(result_content)
