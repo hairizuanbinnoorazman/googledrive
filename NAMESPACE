@@ -2,7 +2,9 @@
 
 export(authorize)
 export(base_list_files)
+export(copy_file)
 export(get_endpoint)
+export(get_file_by_name)
 export(list_files_in_folder)
 export(list_folders_in_folder)
 importFrom(httr,accept_json)
