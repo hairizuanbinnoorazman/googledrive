@@ -136,16 +136,16 @@ get_file_by_name <- function(filename, matchType, id = NULL, pageSize = NULL, pa
 #' @param folderID ID of the folder to store the copied file
 #' @param fileName The name of the file. This is not necessarily unique within a folder.
 #' @export
-copy_file <- function(fileID, folderID, fileName){
+copy_file <- function(fileID, folderID = NULL, fileName = NULL){
   # Get endpoint url
-  url <- get_endpoint("drive.endpoint.files.copy", file_ID)
+  url <- get_endpoint("drive.endpoint.files.copy", fileID)
   # Get token
   token <- get_token()
   config <- httr::config(token=token)
   # List of query parameters
   body_params = list()
   body_params['name'] = fileName
-  body_params['parents'] = list(folderID)
+  body_params['parents'] = list(list(folderID))
   # Modify slides
   result <- httr::POST(url, config = config, accept_json(), body = body_params, encode = "json")
   # Process results
