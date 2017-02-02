@@ -81,4 +81,53 @@ list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
   return(output)
 }
 
+#' Get file via name
+#' @param filename Name of the file in the Drive folder
+#' @param matchType Either exact or contains or not_equal
+#' @param id FolderID to search in. 'all' is also accepted which would mean to search the whole of user's drive
+#' @inheritParams base_list_files
+#' @export
+#' @examples
+#' \dontrun{
+#' library(googledrive)
+#' authorize()
+#' # Folder id is 0XXXXXXXX
+#' get_file_by_name('some_file_name', 'exact', '0XXXXXXXX')
+#' }
+get_file_by_name <- function(filename, matchType, id = NULL, pageSize = NULL, pageToken = NULL,
+                             orderBy = NULL, spaces = NULL, corpus = NULL){
+  if(id == 'all'){
+    if(matchType == 'not_equal'){
+      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+    if(matchType == 'exact'){
+      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+    if(matchType == 'contains'){
+      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+  } else {
+    if(matchType == 'not_equal'){
+      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+    if(matchType == 'exact'){
+      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+    if(matchType == 'contains'){
+      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
+      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+      return(output)
+    }
+  }
+}
 
