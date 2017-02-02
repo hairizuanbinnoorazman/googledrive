@@ -185,8 +185,23 @@ delete_file <- function(fileID){
 #' Download non-Google docs resources from Google Drive
 #' @description The function will acknowledge that the file is safe to download. Do be careful when
 #' downloading files from the web (even if its on your own Google Drive folder)
+#'
+#' If you are downloading images, it would be recommended for you to download the imager package
+#' for quick image manipulation and saving. You would need to convert the image from a 3 dimensional array
+#' to a 4 dimensional array in that case
 #' @param fileID ID of the file in Google Drive
 #' @export
+#' @examples
+#' \dontrun{
+#' library(googledrive)
+#' authorize()
+#' file <- get_file('0XXXXXXXXXXXXXXXXc')
+#'
+#' library(imager)
+#' dim(file) # Check dimensions of the file dataset
+#' dim(file) <- c(400, 320, 1, 3) # Example dimensions for color image (x, y, z, c)
+#' save.image(file, "file.jpg")
+#' }
 get_file <- function(fileID){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.get", fileID)
@@ -196,16 +211,17 @@ get_file <- function(fileID){
   # List of query parameters
   query_params = list()
   query_params['alt'] = 'media'
-  query_params['acknowledgeAbuse'] = TRUE
+  query_params['acknowledgeAbuse'] = FALSE
   # GET Request
-  result <- httr::GET(url, config = config, accept_json(), query = query_params, encode = "json")
+  result <- httr::GET(url, config = config, query = query_params, encode = "json")
   # Process results
-  result_content <- content(result, "text")
-  result_list <- fromJSON(result_content)
+  result_content <- content(result)
+  # result_list <- fromJSON(result_content)
   # If endpoint return url status other than 200, return error message
-  if(httr::status_code(result) != 200){
-    stop(result_list$error$message)
-  }
-  return(result_list)
+  # if(httr::status_code(result) != 200){
+  #  stop(result_list$error$message)
+  #}
+  #return(result_list)
+  return(result_content)
 }
 
