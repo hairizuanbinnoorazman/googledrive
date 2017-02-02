@@ -2,7 +2,7 @@
 % Please edit documentation in R/files.R
 \name{copy_file}
 \alias{copy_file}
-\title{Get file via name}
+\title{Copy a file in Google Drive}
 \usage{
 copy_file(fileID, folderID = NULL, fileName = NULL)
 }
@@ -14,6 +14,6 @@ copy_file(fileID, folderID = NULL, fileName = NULL)
 \item{fileName}{The name of the file. This is not necessarily unique within a folder.}
 }
 \description{
-Get file via name
+Copy a file in Google Drive
 }
 
