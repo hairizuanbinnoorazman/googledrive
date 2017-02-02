@@ -180,3 +180,32 @@ delete_file <- function(fileID){
   }
   return(result_list)
 }
+
+
+#' Download non-Google docs resources from Google Drive
+#' @description The function will acknowledge that the file is safe to download. Do be careful when
+#' downloading files from the web (even if its on your own Google Drive folder)
+#' @param fileID ID of the file in Google Drive
+#' @export
+get_file <- function(fileID){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.files.get", fileID)
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # List of query parameters
+  query_params = list()
+  query_params['alt'] = 'media'
+  query_params['acknowledgeAbuse'] = TRUE
+  # GET Request
+  result <- httr::GET(url, config = config, accept_json(), query = query_params, encode = "json")
+  # Process results
+  result_content <- content(result, "text")
+  result_list <- fromJSON(result_content)
+  # If endpoint return url status other than 200, return error message
+  if(httr::status_code(result) != 200){
+    stop(result_list$error$message)
+  }
+  return(result_list)
+}
+
