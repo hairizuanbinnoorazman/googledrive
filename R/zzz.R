@@ -14,6 +14,7 @@
     # Files Resource Representation
     drive.endpoint.files.copy = "https://www.googleapis.com/drive/v3/files/{fileId}/copy",
     drive.endpoint.upload.files.create = "https://www.googleapis.com/upload/drive/v3/files",
+    drive.endpoint.files.delete = "https://www.googleapis.com/drive/v3/files/{fileId}",
     drive.endpoint.files.generateIds = "https://www.googleapis.com/drive/v3/files/generateIds",
     drive.endpoint.files.get = "https://www.googleapis.com/drive/v3/files/{fileId}",
     drive.endpoint.files.list = "https://www.googleapis.com/drive/v3/files",
