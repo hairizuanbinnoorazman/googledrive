@@ -131,3 +131,29 @@ get_file_by_name <- function(filename, matchType, id = NULL, pageSize = NULL, pa
   }
 }
 
+#' Get file via name
+#' @param fileID ID of the file in Google Drive
+#' @param folderID ID of the folder to store the copied file
+#' @param fileName The name of the file. This is not necessarily unique within a folder.
+#' @export
+copy_file <- function(fileID, folderID, fileName){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.files.copy", file_ID)
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # List of query parameters
+  body_params = list()
+  body_params['name'] = fileName
+  body_params['parents'] = list(folderID)
+  # Modify slides
+  result <- httr::POST(url, config = config, accept_json(), body = body_params, encode = "json")
+  # Process results
+  result_content <- content(result, "text")
+  result_list <- fromJSON(result_content)
+  # If endpoint return url status other than 200, return error message
+  if(httr::status_code(result) != 200){
+    stop(result_list$error$message)
+  }
+  return(result_list)
+}
