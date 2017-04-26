@@ -15,7 +15,7 @@
 #' @param spaces Optional. A comma-separated list of spaces to query within the corpus. Supported
 #' values are 'drive', 'appDataFolder' and 'photos'.
 #' @param corpus Optional. The source of files to list. Acceptable values are domain and user
-#' @importFrom httr config accept_json content
+#' @importFrom httr config accept_json content GET
 #' @importFrom jsonlite fromJSON
 #' @export
 base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
@@ -225,3 +225,25 @@ get_file <- function(fileID){
   return(result_content)
 }
 
+
+#' Upload file to Google Drive
+#' @export
+#' @importFrom httr config accept_json content POST upload_file
+#' @importFrom jsonlite fromJSON
+upload_file <- function(fileName){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.upload.files.create")
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # List of query parameters
+  query_params = list()
+  query_params['uploadType'] = 'media'
+  # Body parameters
+  body_params = httr::upload_file(fileName)
+  # POST Request
+  result <- httr::POST(url, config = config, query = query_params, body = body_params)
+  # Process results
+  result_content <- content(result)
+  return(result_content)
+}

@@ -12,5 +12,21 @@ get_file(fileID)
 \description{
 The function will acknowledge that the file is safe to download. Do be careful when
 downloading files from the web (even if its on your own Google Drive folder)
+
+If you are downloading images, it would be recommended for you to download the imager package
+for quick image manipulation and saving. You would need to convert the image from a 3 dimensional array
+to a 4 dimensional array in that case
+}
+\examples{
+\dontrun{
+library(googledrive)
+authorize()
+file <- get_file('0XXXXXXXXXXXXXXXXc')
+
+library(imager)
+dim(file) # Check dimensions of the file dataset
+dim(file) <- c(400, 320, 1, 3) # Example dimensions for color image (x, y, z, c)
+save.image(file, "file.jpg")
+}
 }
 
