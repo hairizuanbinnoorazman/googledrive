@@ -58,7 +58,11 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
 #' }
 list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                   orderBy = NULL, spaces = NULL, corpus = NULL){
-  q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
+  if (is.null(id)){
+    q = paste0("'root' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
+  } else {
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
+  }
   output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
   return(output)
 }
@@ -76,7 +80,11 @@ list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' }
 list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                  orderBy = NULL, spaces = NULL, corpus = NULL){
-  q = paste0("'", id, "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false")
+  if (is.null(id)){
+    q = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+  } else {
+    q = paste0("'", id, "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false")
+  }
   output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
   return(output)
 }
