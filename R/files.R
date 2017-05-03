@@ -53,8 +53,12 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
 #' \dontrun{
 #' library(googledrive)
 #' authorize()
+#'
 #' # Folder id is 0XXXXXXXX
 #' list_files_in_folder('0XXXXXXXX')
+#'
+#' # If id is not specified, list of files would be obtained from root Google drive folder
+#' list_files_in_folder()
 #' }
 list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                   orderBy = NULL, spaces = NULL, corpus = NULL){
@@ -75,8 +79,12 @@ list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' \dontrun{
 #' library(googledrive)
 #' authorize()
+#'
 #' # Folder id is 0XXXXXXXX
 #' list_folders_in_folder('0XXXXXXXX')
+#'
+#' If id is not specified, list of files would be obtained from root Google drive folder
+#' list_folders_in_folder()
 #' }
 list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
                                  orderBy = NULL, spaces = NULL, corpus = NULL){
@@ -90,6 +98,9 @@ list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 }
 
 #' Get file via name
+#' @description Allows you to pull the a list of file names that match the names that you provide to the file.
+#' Due to Google Drive's nature to allow multiple files with the same name to coexist in the same folder, you may
+#' be able to obtain a list of files even if you put matchType exact
 #' @param filename Name of the file in the Drive folder
 #' @param matchType Either exact or contains or not_equal
 #' @param id FolderID to search in. 'all' is also accepted which would mean to search the whole of user's drive
@@ -102,49 +113,33 @@ list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' # Folder id is 0XXXXXXXX
 #' get_file_by_name('some_file_name', 'exact', '0XXXXXXXX')
 #' }
-get_file_by_name <- function(filename, matchType, id = NULL, pageSize = NULL, pageToken = NULL,
+get_file_by_name <- function(filename, matchType, id = 'root', pageSize = NULL, pageToken = NULL,
                              orderBy = NULL, spaces = NULL, corpus = NULL){
-  if(id == 'all'){
-    if(matchType == 'not_equal'){
-      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
-    if(matchType == 'exact'){
-      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
-    if(matchType == 'contains'){
-      q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
-  } else {
-    if(matchType == 'not_equal'){
-      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
-    if(matchType == 'exact'){
-      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
-    if(matchType == 'contains'){
-      q = paste0("mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
-      output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
-      return(output)
-    }
+  if(matchType == 'not_equal'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
+    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+    return(output)
+  }
+  if(matchType == 'exact'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
+    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+    return(output)
+  }
+  if(matchType == 'contains'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
+    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+    return(output)
   }
 }
 
 #' Copy a file in Google Drive
 #' @param fileID ID of the file in Google Drive
 #' @param folderID ID of the folder to store the copied file
-#' @param fileName The name of the file. This is not necessarily unique within a folder.
+#' @param fileName The name to be given to the copied file. This does not need to be unique within a folder.
+#' @importFrom httr config accept_json content POST
+#' @importFrom jsonlite fromJSON
 #' @export
-copy_file <- function(fileID, folderID = NULL, fileName = NULL){
+copy_file <- function(fileID, folderID = 'root', fileName = NULL){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.copy", fileID)
   # Get token
@@ -226,20 +221,17 @@ get_file <- function(fileID){
   result <- httr::GET(url, config = config, query = query_params, encode = "json")
   # Process results
   result_content <- content(result)
-  # result_list <- fromJSON(result_content)
-  # If endpoint return url status other than 200, return error message
-  # if(httr::status_code(result) != 200){
-  #  stop(result_list$error$message)
-  #}
-  #return(result_list)
   return(result_content)
 }
 
 
 #' Upload file to Google Drive
-#' @export
+#' @description Allows you to uploads files into Google Drive. During the uploading process, you would
+#' not be able to define other metadata that concerns the file. Utilize other functions to edit the
+#' file metadata
 #' @importFrom httr config accept_json content POST upload_file
 #' @importFrom jsonlite fromJSON
+#' @export
 upload_file <- function(fileName){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.upload.files.create")

@@ -7,6 +7,8 @@
 upload_file(fileName)
 }
 \description{
-Upload file to Google Drive
+Allows you to uploads files into Google Drive. During the uploading process, you would
+not be able to define other metadata that concerns the file. Utilize other functions to edit the
+file metadata
 }
 

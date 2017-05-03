@@ -4,7 +4,7 @@
 \alias{get_file_by_name}
 \title{Get file via name}
 \usage{
-get_file_by_name(filename, matchType, id = NULL, pageSize = NULL,
+get_file_by_name(filename, matchType, id = "root", pageSize = NULL,
   pageToken = NULL, orderBy = NULL, spaces = NULL, corpus = NULL)
 }
 \arguments{
@@ -31,7 +31,9 @@ values are 'drive', 'appDataFolder' and 'photos'.}
 \item{corpus}{Optional. The source of files to list. Acceptable values are domain and user}
 }
 \description{
-Get file via name
+Allows you to pull the a list of file names that match the names that you provide to the file.
+Due to Google Drive's nature to allow multiple files with the same name to coexist in the same folder, you may
+be able to obtain a list of files even if you put matchType exact
 }
 \examples{
 \dontrun{

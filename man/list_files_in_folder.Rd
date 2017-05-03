@@ -33,8 +33,12 @@ Get list of files from a folder
 \dontrun{
 library(googledrive)
 authorize()
+
 # Folder id is 0XXXXXXXX
 list_files_in_folder('0XXXXXXXX')
+
+# If id is not specified, list of files would be obtained from root Google drive folder
+list_files_in_folder()
 }
 }
 
