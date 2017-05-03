@@ -162,6 +162,8 @@ copy_file <- function(fileID, folderID = NULL, fileName = NULL){
 #' Delete a file in Google Drive
 #' @description Permanently deletes a file owned by the user without moving it to the trash.
 #' @param fileID ID of the file in Google Drive
+#' @importFrom httr config accept_json content DELETE
+#' @importFrom jsonlite fromJSON
 #' @export
 delete_file <- function(fileID){
   # Get endpoint url
