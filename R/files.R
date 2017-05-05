@@ -18,8 +18,8 @@
 #' @importFrom httr config accept_json content GET
 #' @importFrom jsonlite fromJSON
 #' @export
-base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
-                       orderBy = NULL, spaces = NULL, corpus = NULL){
+base_list_files <- function(q = NULL, page_size = NULL, page_token = NULL,
+                       order_by = NULL, spaces = NULL, corpus = NULL){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.list")
   # Get token
@@ -28,9 +28,9 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
   # List of query parameters
   query_params = list()
   query_params['q'] = q
-  query_params['pageSize'] = pageSize
-  query_params['pageToken'] = pageToken
-  query_params['orderBy'] = orderBy
+  query_params['pageSize'] = page_size
+  query_params['pageToken'] = page_token
+  query_params['orderBy'] = order_by
   query_params['spaces'] = spaces
   query_params['corpus'] = corpus
   # GET Request
@@ -60,14 +60,14 @@ base_list_files <- function(q = NULL, pageSize = NULL, pageToken = NULL,
 #' # If id is not specified, list of files would be obtained from root Google drive folder
 #' list_files_in_folder()
 #' }
-list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
-                                  orderBy = NULL, spaces = NULL, corpus = NULL){
+list_files_in_folder <- function(id = NULL, page_size = NULL, page_token = NULL,
+                                  order_by = NULL, spaces = NULL, corpus = NULL){
   if (is.null(id)){
     q = paste0("'root' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
   } else {
     q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false")
   }
-  output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+  output <- base_list_files(q, page_size, page_token, order_by, spaces, corpus)
   return(output)
 }
 
@@ -86,14 +86,14 @@ list_files_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' If id is not specified, list of files would be obtained from root Google drive folder
 #' list_folders_in_folder()
 #' }
-list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
-                                 orderBy = NULL, spaces = NULL, corpus = NULL){
+list_folders_in_folder <- function(id = NULL, page_size = NULL, page_token = NULL,
+                                 order_by = NULL, spaces = NULL, corpus = NULL){
   if (is.null(id)){
     q = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
   } else {
     q = paste0("'", id, "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false")
   }
-  output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+  output <- base_list_files(q, page_size, page_token, order_by, spaces, corpus)
   return(output)
 }
 
@@ -113,21 +113,21 @@ list_folders_in_folder <- function(id = NULL, pageSize = NULL, pageToken = NULL,
 #' # Folder id is 0XXXXXXXX
 #' get_file_by_name('some_file_name', 'exact', '0XXXXXXXX')
 #' }
-get_file_by_name <- function(filename, matchType, id = 'root', pageSize = NULL, pageToken = NULL,
-                             orderBy = NULL, spaces = NULL, corpus = NULL){
-  if(matchType == 'not_equal'){
-    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", filename, "'")
-    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+get_file_by_name <- function(file_name, match_type, id = 'root', page_size = NULL, page_token = NULL,
+                             order_by = NULL, spaces = NULL, corpus = NULL){
+  if(match_type == 'not_equal'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and not name contains '", file_name, "'")
+    output <- base_list_files(q, page_size, page_token, order_by, spaces, corpus)
     return(output)
   }
-  if(matchType == 'exact'){
-    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", filename, "'")
-    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+  if(match_type == 'exact'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name = '", file_name, "'")
+    output <- base_list_files(q, page_size, page_token, order_by, spaces, corpus)
     return(output)
   }
-  if(matchType == 'contains'){
-    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", filename, "'")
-    output <- base_list_files(q, pageSize, pageToken, orderBy, spaces, corpus)
+  if(match_type == 'contains'){
+    q = paste0("'", id, "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false and name contains '", file_name, "'")
+    output <- base_list_files(q, page_size, page_token, order_by, spaces, corpus)
     return(output)
   }
 }
@@ -139,7 +139,7 @@ get_file_by_name <- function(filename, matchType, id = 'root', pageSize = NULL, 
 #' @importFrom httr config accept_json content POST
 #' @importFrom jsonlite fromJSON
 #' @export
-copy_file <- function(fileID, folderID = 'root', fileName = NULL){
+copy_file <- function(file_id, folder_id = 'root', file_name = NULL){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.copy", fileID)
   # Get token
@@ -147,8 +147,8 @@ copy_file <- function(fileID, folderID = 'root', fileName = NULL){
   config <- httr::config(token=token)
   # List of query parameters
   body_params = list()
-  body_params['name'] = fileName
-  body_params['parents'] = list(list(folderID))
+  body_params['name'] = file_name
+  body_params['parents'] = list(list(folder_idD))
   # POST Request
   result <- httr::POST(url, config = config, accept_json(), body = body_params, encode = "json")
   # Process results
@@ -165,12 +165,14 @@ copy_file <- function(fileID, folderID = 'root', fileName = NULL){
 #' Delete a file in Google Drive
 #' @description Permanently deletes a file owned by the user without moving it to the trash.
 #' @param fileID ID of the file in Google Drive
+#' @importFrom assertthat assert_that
 #' @importFrom httr config accept_json content DELETE
 #' @importFrom jsonlite fromJSON
 #' @export
-delete_file <- function(fileID){
+delete_file <- function(file_id){
+  assert_that(is.character(file_id))
   # Get endpoint url
-  url <- get_endpoint("drive.endpoint.files.delete", fileID)
+  url <- get_endpoint("drive.endpoint.files.delete", file_id)
   # Get token
   token <- get_token()
   config <- httr::config(token=token)
@@ -231,10 +233,12 @@ get_file <- function(fileID){
 #' @description Allows you to uploads files into Google Drive. During the uploading process, you would
 #' not be able to define other metadata that concerns the file. Utilize other functions to edit the
 #' file metadata
+#' @importFrom assertthat assert_that
 #' @importFrom httr config accept_json content POST upload_file
 #' @importFrom jsonlite fromJSON
 #' @export
-upload_file <- function(fileName){
+upload_file <- function(file_name){
+  assert_that(is.character(file_name))
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.upload.files.create")
   # Get token
@@ -244,7 +248,7 @@ upload_file <- function(fileName){
   query_params = list()
   query_params['uploadType'] = 'media'
   # Body parameters
-  body_params = httr::upload_file(fileName)
+  body_params = httr::upload_file(file_name)
   # POST Request
   result <- httr::POST(url, config = config, query = query_params, body = body_params)
   # Process results
@@ -264,7 +268,7 @@ upload_file <- function(fileName){
 #' @importFrom httr config accept_json content PATCH
 #' @importFrom jsonlite fromJSON
 #' @export
-move_file <- function(fileId, addFolders = NULL, removeFolders = NULL){
+move_file <- function(fileId, add_folders = NULL, remove_folders = NULL){
   # Get endpoint url
   url <- get_endpoint("drive.endpoint.files.update", fileId)
   # Get token
@@ -272,8 +276,8 @@ move_file <- function(fileId, addFolders = NULL, removeFolders = NULL){
   config <- httr::config(token=token)
   # List of query parameters
   query_params = list()
-  query_params['addParents'] = paste0(addFolders, collapse = ",")
-  query_params['removeParents'] = paste0(removeFolders, collapse = ",")
+  query_params['addParents'] = paste0(add_folders, collapse = ",")
+  query_params['removeParents'] = paste0(remove_folders, collapse = ",")
   # PATCH Request
   result <- httr::PATCH(url, config = config, query = query_params)
   # Process results
@@ -290,9 +294,9 @@ move_file <- function(fileId, addFolders = NULL, removeFolders = NULL){
 #' @importFrom httr config accept_json content PATCH upload_file content_type_json
 #' @importFrom jsonlite fromJSON toJSON
 #' @export
-update_file_metadata <- function(fileId, name = NULL, description = NULL, starred = NULL, trashed = NULL){
+update_file_metadata <- function(file_id, name = NULL, description = NULL, starred = NULL, trashed = NULL){
   # Get endpoint url
-  url <- get_endpoint("drive.endpoint.files.update", fileId)
+  url <- get_endpoint("drive.endpoint.files.update", file_id)
   # Get token
   token <- get_token()
   config <- httr::config(token=token)
