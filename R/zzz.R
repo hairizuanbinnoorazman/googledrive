@@ -18,6 +18,8 @@
     drive.endpoint.files.generateIds = "https://www.googleapis.com/drive/v3/files/generateIds",
     drive.endpoint.files.get = "https://www.googleapis.com/drive/v3/files/{fileId}",
     drive.endpoint.files.list = "https://www.googleapis.com/drive/v3/files",
+    drive.endpoint.files.update = "https://www.googleapis.com/drive/v3/files/{fileId}",
+    drive.endpoint.upload.files.update = "https://www.googleapis.com/upload/drive/v3/files/{fileId}?alt=json&uploadType=multipart",
 
     # Permissions Resource Representation
     drive.endpoint.permissions.create = "https://www.googleapis.com/drive/v3/files/{fileId}/permissions",
