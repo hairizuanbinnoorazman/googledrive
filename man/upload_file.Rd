@@ -4,7 +4,11 @@
 \alias{upload_file}
 \title{Upload file to Google Drive}
 \usage{
-upload_file(fileName)
+upload_file(file_name)
+}
+\arguments{
+\item{file_name}{Name of the file that is to be uploaded into Google Drive. The file will be named as
+'untitled'}
 }
 \description{
 Allows you to uploads files into Google Drive. During the uploading process, you would

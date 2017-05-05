@@ -4,22 +4,22 @@
 \alias{list_folders_in_folder}
 \title{Get list of folders from a folder}
 \usage{
-list_folders_in_folder(id = NULL, pageSize = NULL, pageToken = NULL,
-  orderBy = NULL, spaces = NULL, corpus = NULL)
+list_folders_in_folder(id = "root", page_size = NULL, page_token = NULL,
+  order_by = NULL, spaces = NULL, corpus = NULL)
 }
 \arguments{
 \item{id}{ID of the drive folder}
 
-\item{pageSize}{Optional. The maximum number of files to return per page. Acceptable values are 1 to 1000,
+\item{page_size}{Optional. The maximum number of files to return per page. Acceptable values are 1 to 1000,
 inclusive. (Default: 100)}
 
-\item{pageToken}{Optional. The token for continuing a previous list request on the next page. This should be
+\item{page_token}{Optional. The token for continuing a previous list request on the next page. This should be
 set to the value of 'nextPageToken' from the previous response.}
 
-\item{orderBy}{Optional. A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder',
+\item{order_by}{Optional. A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder',
 'modifiedByMeTime', 'modifiedTime', 'name', 'quotaBytesUsed', 'recency', 'sharedWithMeTime',
 'starred', and 'viewedByMeTime'. Each key sorts ascending by default, but may be reversed with the
-'desc' modifier. Example usage: ?orderBy=folder,modifiedTime desc,name.}
+'desc' modifier. Example usage: ?order_by=folder,modifiedTime desc,name.}
 
 \item{spaces}{Optional. A comma-separated list of spaces to query within the corpus. Supported
 values are 'drive', 'appDataFolder' and 'photos'.}
@@ -37,7 +37,7 @@ authorize()
 # Folder id is 0XXXXXXXX
 list_folders_in_folder('0XXXXXXXX')
 
-If id is not specified, list of files would be obtained from root Google drive folder
+# If id is not specified, list of files would be obtained from root Google drive folder
 list_folders_in_folder()
 }
 }

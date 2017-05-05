@@ -4,10 +4,10 @@
 \alias{delete_file}
 \title{Delete a file in Google Drive}
 \usage{
-delete_file(fileID)
+delete_file(file_id)
 }
 \arguments{
-\item{fileID}{ID of the file in Google Drive}
+\item{file_id}{ID of the file in Google Drive}
 }
 \description{
 Permanently deletes a file owned by the user without moving it to the trash.

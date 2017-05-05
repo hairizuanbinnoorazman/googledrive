@@ -4,10 +4,10 @@
 \alias{move_file}
 \title{Add or remove file from folders}
 \usage{
-move_file(fileId, addFolders = NULL, removeFolders = NULL)
+move_file(file_id, add_folders = NULL, remove_folders = NULL)
 }
 \arguments{
-\item{fileId}{The ID of the file.}
+\item{file_id}{The ID of the file.}
 
 \item{addFolders}{A character vector of folder Ids}
 

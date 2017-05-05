@@ -1,6 +1,5 @@
 #' Generate endpoint for the Google Drive API
-#' Temporarily available
-#' @export
+#' @keywords internal
 get_endpoint <- function(typeOfEndpoint = "drive.endpoint.about", fileId = NULL, permissionId = NULL){
   url = getOption(typeOfEndpoint)
   # If there is no parameter within URL, it is supposed to return the url with no changes

@@ -2,14 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{get_endpoint}
 \alias{get_endpoint}
-\title{Generate endpoint for the Google Drive API
-Temporarily available}
+\title{Generate endpoint for the Google Drive API}
 \usage{
 get_endpoint(typeOfEndpoint = "drive.endpoint.about", fileId = NULL,
   permissionId = NULL)
 }
 \description{
 Generate endpoint for the Google Drive API
-Temporarily available
 }
+\keyword{internal}
 

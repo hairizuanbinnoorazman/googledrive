@@ -4,31 +4,31 @@
 \alias{get_file_by_name}
 \title{Get file via name}
 \usage{
-get_file_by_name(filename, matchType, id = "root", pageSize = NULL,
-  pageToken = NULL, orderBy = NULL, spaces = NULL, corpus = NULL)
+get_file_by_name(file_name, match_type, id = "root", page_size = NULL,
+  page_token = NULL, order_by = NULL, spaces = NULL, corpus = NULL)
 }
 \arguments{
-\item{filename}{Name of the file in the Drive folder}
-
-\item{matchType}{Either exact or contains or not_equal}
-
 \item{id}{FolderID to search in. 'all' is also accepted which would mean to search the whole of user's drive}
 
-\item{pageSize}{Optional. The maximum number of files to return per page. Acceptable values are 1 to 1000,
+\item{page_size}{Optional. The maximum number of files to return per page. Acceptable values are 1 to 1000,
 inclusive. (Default: 100)}
 
-\item{pageToken}{Optional. The token for continuing a previous list request on the next page. This should be
+\item{page_token}{Optional. The token for continuing a previous list request on the next page. This should be
 set to the value of 'nextPageToken' from the previous response.}
 
-\item{orderBy}{Optional. A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder',
+\item{order_by}{Optional. A comma-separated list of sort keys. Valid keys are 'createdTime', 'folder',
 'modifiedByMeTime', 'modifiedTime', 'name', 'quotaBytesUsed', 'recency', 'sharedWithMeTime',
 'starred', and 'viewedByMeTime'. Each key sorts ascending by default, but may be reversed with the
-'desc' modifier. Example usage: ?orderBy=folder,modifiedTime desc,name.}
+'desc' modifier. Example usage: ?order_by=folder,modifiedTime desc,name.}
 
 \item{spaces}{Optional. A comma-separated list of spaces to query within the corpus. Supported
 values are 'drive', 'appDataFolder' and 'photos'.}
 
 \item{corpus}{Optional. The source of files to list. Acceptable values are domain and user}
+
+\item{filename}{Name of the file in the Drive folder}
+
+\item{matchType}{Either exact or contains or not_equal}
 }
 \description{
 Allows you to pull the a list of file names that match the names that you provide to the file.

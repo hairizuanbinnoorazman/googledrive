@@ -4,15 +4,19 @@
 \alias{update_file_metadata}
 \title{Update file metadata properties}
 \usage{
-update_file_metadata(fileId, name = NULL, description = NULL,
+update_file_metadata(file_id, name = NULL, description = NULL,
   starred = NULL, trashed = NULL)
 }
 \arguments{
-\item{fileId}{The ID of the file.}
+\item{file_id}{The ID of the file.}
 
 \item{name}{Name of the file. Overwrites the file name on Google Drive}
 
 \item{description}{Description of the file. Overwrites the description on Google Drive}
+
+\item{starred}{A boolean property to determine whether the file is to be starred or not}
+
+\item{trashed}{A boolean property to determine whether the file is to be put into the trash or not}
 }
 \description{
 Allows you to update the name and description of the file

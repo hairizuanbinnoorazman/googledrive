@@ -4,14 +4,14 @@
 \alias{copy_file}
 \title{Copy a file in Google Drive}
 \usage{
-copy_file(fileID, folderID = "root", fileName = NULL)
+copy_file(file_id, folder_id = "root", file_name = NULL)
 }
 \arguments{
-\item{fileID}{ID of the file in Google Drive}
+\item{file_id}{ID of the file in Google Drive}
 
-\item{folderID}{ID of the folder to store the copied file}
+\item{folder_id}{ID of the folder to store the copied file}
 
-\item{fileName}{The name to be given to the copied file. This does not need to be unique within a folder.}
+\item{file_name}{The name to be given to the copied file. This does not need to be unique within a folder.}
 }
 \description{
 Copy a file in Google Drive

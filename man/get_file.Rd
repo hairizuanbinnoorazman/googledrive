@@ -4,7 +4,7 @@
 \alias{get_file}
 \title{Download non-Google docs resources from Google Drive}
 \usage{
-get_file(fileID)
+get_file(file_id)
 }
 \arguments{
 \item{fileID}{ID of the file in Google Drive}
