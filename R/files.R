@@ -194,14 +194,16 @@ delete_file <- function(fileID){
 #' If you are downloading images, it would be recommended for you to download the imager package
 #' for quick image manipulation and saving. You would need to convert the image from a 3 dimensional array
 #' to a 4 dimensional array in that case
+#'
+#' This function is temporarily disabled as there are issues to be resolved
 #' @param fileID ID of the file in Google Drive
-#' @export
 #' @examples
 #' \dontrun{
 #' library(googledrive)
 #' authorize()
 #' file <- get_file('0XXXXXXXXXXXXXXXXc')
 #'
+#' # Example with image
 #' library(imager)
 #' dim(file) # Check dimensions of the file dataset
 #' dim(file) <- c(400, 320, 1, 3) # Example dimensions for color image (x, y, z, c)
@@ -220,7 +222,7 @@ get_file <- function(fileID){
   # GET Request
   result <- httr::GET(url, config = config, query = query_params, encode = "json")
   # Process results
-  result_content <- content(result)
+  result_content <- content(result, type = "raw")
   return(result_content)
 }
 
@@ -245,6 +247,63 @@ upload_file <- function(fileName){
   body_params = httr::upload_file(fileName)
   # POST Request
   result <- httr::POST(url, config = config, query = query_params, body = body_params)
+  # Process results
+  result_content <- content(result)
+  return(result_content)
+}
+
+
+#' Add or remove file from folders
+#' @description Allows you to move file around. Due to the nature of Google drive which allows multiple
+#' files with the same names to coexist in the same folder, we can technically "hook" files into the
+#' folders. At the same time, there is a convenient feature of being able to "hook" a file into
+#' multiple folders at the same time which basically means a file can be in 2 folders at once.
+#' @param fileId The ID of the file.
+#' @param addFolders A character vector of folder Ids
+#' @param removeFolders A character vector of folder Ids
+#' @importFrom httr config accept_json content PATCH
+#' @importFrom jsonlite fromJSON
+#' @export
+move_file <- function(fileId, addFolders = NULL, removeFolders = NULL){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.files.update", fileId)
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # List of query parameters
+  query_params = list()
+  query_params['addParents'] = paste0(addFolders, collapse = ",")
+  query_params['removeParents'] = paste0(removeFolders, collapse = ",")
+  # PATCH Request
+  result <- httr::PATCH(url, config = config, query = query_params)
+  # Process results
+  result_content <- content(result)
+  return(result_content)
+}
+
+
+#' Update file metadata properties
+#' @description Allows you to update the name and description of the file
+#' @param fileId The ID of the file.
+#' @param name Name of the file. Overwrites the file name on Google Drive
+#' @param description Description of the file. Overwrites the description on Google Drive
+#' @importFrom httr config accept_json content PATCH upload_file content_type_json
+#' @importFrom jsonlite fromJSON toJSON
+#' @export
+update_file_metadata <- function(fileId, name = NULL, description = NULL, starred = NULL, trashed = NULL){
+  # Get endpoint url
+  url <- get_endpoint("drive.endpoint.files.update", fileId)
+  # Get token
+  token <- get_token()
+  config <- httr::config(token=token)
+  # List of query parameters
+  body_params = list()
+  body_params['name'] = name
+  body_params['description'] = description
+  body_params['starred'] = starred
+  body_params['trashed'] = trashed
+  # PATCH Request
+  result <- httr::PATCH(url, config = config, content_type_json(), body = as.character(toJSON(body_params, auto_unbox=TRUE)))
   # Process results
   result_content <- content(result)
   return(result_content)
